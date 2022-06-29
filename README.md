@@ -1,0 +1,2 @@
+# SolanaWalletDApp
+Solana上で動作するウォレットアプリ用のリポジトリです。
