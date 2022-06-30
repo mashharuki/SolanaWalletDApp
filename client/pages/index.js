@@ -25,6 +25,7 @@ export default function Home() {
   const [account, setAccount] = useState(null);
   const [balance, setBalance] = useState(0);
   const [transactionSig, setTransactionSig] = useState("");
+  const [initFlg, setInitFlg] = useState(true);
 
   /**
    * アカウントを生成するメソッド
@@ -32,6 +33,8 @@ export default function Home() {
   const generateWallet = () => {
     // ニーモニックフレーズを生成する。
     const generatedMnemonic = Bip39.generateMnemonic();
+    // ステート変数を更新する。
+    setMnemonic(generatedMnemonic);
     console.log(seed);
     // 最初の32バイトだけを保持する様にする。
     const seed = Bip39.mnemonicToSeedSync(generatedMnemonic).slice(0, 32);
@@ -179,17 +182,44 @@ export default function Home() {
         <hr className="my-6" />
 
         <div>
-          <h2 className="p-2 border-dotted border-l-4 border-l-indigo-400">STEP1: ウォレットを新規作成する</h2>
+          <h2 className="p-2 border-dotted border-l-4 border-l-indigo-400">ウォレット新規作成機能</h2>
           {/* ウォレット生成ボタン */}
           <button
             className="p-2 my-6 text-white bg-indigo-500 focus:ring focus:ring-indigo-300 rounded-lg cursor-pointer"
             onClick={generateWallet}
           >
             ウォレットを生成
-          </button>
+          </button><br/>
+          {/* ニーモニックフレーズ確認ボタン */}
+          {initFlg ? 
+            <button
+              className="p-2 my-6 text-white bg-sky-500 focus:ring focus:ring-sky-300 rounded-lg cursor-pointer"
+              onClick={() => setInitFlg(false)}
+            >
+              ニーモニックフレーズを確認する
+            </button>
+          : 
+            <button
+              className="p-2 my-6 text-white bg-sky-500 focus:ring focus:ring-sky-300 rounded-lg cursor-pointer"
+              onClick={() => {
+                // クリップボードにコピ-する。
+                navigator.clipboard.writeText(mnemonic);
+                alert("コピーしました！");
+                setInitFlg(true);
+              }}
+            >
+              ニーモニックフレーズをコピーする
+            </button>
+          }
           {mnemonic && (
             <>
-              <div className="mt-1 p-4 border border-gray-300 bg-gray-200">{mnemonic}</div>
+              <div className={initFlg ? 
+                "mt-1 p-4 border border-gray-300 bg-gray-200 blur-lg"
+              :  
+                "mt-1 p-4 border border-gray-300 bg-gray-200"
+              }>
+                {mnemonic}
+              </div>
               <strong className="text-xs">
                 このフレーズは秘密にして、安全に保管してください。このフレーズが漏洩すると、誰でもあなたの資産にアクセスできてしまいます。<br />
                 オンライン銀行口座のパスワードのようなものだと考えてください。
@@ -201,7 +231,7 @@ export default function Home() {
         <hr className="my-6" />
 
         <div>
-          <h2 className="p-2 border-dotted border-l-4 border-l-indigo-400">STEP2: 既存のウォレットをインポートする</h2>
+          <h2 className="p-2 border-dotted border-l-4 border-l-indigo-400">ウォレット復元機能</h2>
           {/* リカバリー */}  
           <form onSubmit={handleImport} className="my-6">
             <div className="flex items-center border-b border-indigo-500 py-2">
@@ -237,7 +267,7 @@ export default function Home() {
         <hr className="my-6" />
 
         <div>
-          <h2 className="p-2 border-dotted border-l-4 border-l-indigo-400">STEP4: エアドロップ機能を実装する</h2>
+          <h2 className="p-2 border-dotted border-l-4 border-l-indigo-400">エアドロップ機能</h2>
           {/* エアドロップボタン */}
           {account && (
             <button
@@ -252,7 +282,7 @@ export default function Home() {
         <hr className="my-6" />
 
         <div>
-          <h2 className="p-2 border-dotted border-l-4 border-l-indigo-400">STEP5: 送金機能を実装する</h2>
+          <h2 className="p-2 border-dotted border-l-4 border-l-indigo-400">送金機能</h2>
           {account && (
             <>
               {/* 送金ボタン */}
