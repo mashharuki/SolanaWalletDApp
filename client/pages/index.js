@@ -163,7 +163,7 @@ export default function Home() {
           My <span className="text-[#9945FF]">Solana</span> Wallet
         </h1>
         <div className="mx-auto mt-5 text-gray-500">
-          Solanaウォレットの新規作成、インポート、エアドロップ、機能を試せます。
+          Solanaウォレットの新規作成、インポート、エアドロップ、送金機能を試せます。
         </div>
 
         <hr className="my-6" />
@@ -286,7 +286,7 @@ export default function Home() {
         <hr className="my-6" />
 
         <div>
-          <h2 className="p-2 border-dotted border-l-4 border-l-indigo-400">STEP3: 残高を取得する</h2>
+          <h2 className="p-2 border-dotted border-l-4 border-l-indigo-400">残高照会機能</h2>
           {/* 残高取得ボタン */}
           {account &&
             <button
