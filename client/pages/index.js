@@ -102,7 +102,9 @@ export default function Home() {
 
     // フォームから送信先のアドレスを取得する。
     const toAddress = e.target[0].value;
+    const amount = e.target[1].value;
     console.log('toAddress', toAddress);
+    console.log('toAmount', amount);
   
     try {
       console.log('送金中...')
@@ -115,7 +117,7 @@ export default function Home() {
       const instructions = SystemProgram.transfer({
         fromPubkey: account.publicKey,
         toPubkey: new PublicKey(toAddress),
-        lamports: LAMPORTS_PER_SOL,
+        lamports: (amount * LAMPORTS_PER_SOL),
       });
       // トランザクションオブジェクトを生成する。
       const transaction = new Transaction().add(instructions);
@@ -260,6 +262,12 @@ export default function Home() {
                     type="text"
                     className="w-full text-gray-700 mr-3 p-1 focus:outline-none"
                     placeholder="送金先のウォレットアドレス"
+                  />
+                  <br/>
+                  <input
+                    type="number"
+                    className="w-full text-gray-700 mr-3 p-1 focus:outline-none"
+                    placeholder="送金額"
                   />
                   <input
                     type="submit"
