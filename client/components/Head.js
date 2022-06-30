@@ -1,6 +1,9 @@
 import React from "react";
 import Head from "next/head";
 
+/**
+ * HeadComponentコンポーネント
+ */
 export default function HeadComponent() {
   return (
     <Head>

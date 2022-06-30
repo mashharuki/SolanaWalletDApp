@@ -6,3 +6,6 @@ Solana上で動作するウォレットアプリ用のリポジトリです。
 
 ### 残高の取得例
  <img src="./assets/balance.png"> 
+
+### 送金処理
+ <img src="./assets/send.png">
