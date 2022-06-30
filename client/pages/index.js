@@ -13,7 +13,7 @@ import {
 import HeadComponent from '../components/Head';
 
 // 接続するネットワークを選択
-const NETWORK = 'devnet';
+// const NETWORK = 'devnet';
 
 /**
  * Homeコンポーネント
@@ -26,6 +26,7 @@ export default function Home() {
   const [balance, setBalance] = useState(0);
   const [transactionSig, setTransactionSig] = useState("");
   const [initFlg, setInitFlg] = useState(true);
+  const [network, setNetwork] = useState(null);
 
   /**
    * アカウントを生成するメソッド
@@ -69,7 +70,7 @@ export default function Home() {
   const refreshBalance = async () => {
     try {
       // コネクションインスタンスを生成
-      const connection = new Connection(clusterApiUrl(NETWORK), "confirmed");
+      const connection = new Connection(clusterApiUrl(network), "confirmed");
       // 公開鍵を取得する。
       const publicKey = account.publicKey;
       // 残高を取得する。
@@ -88,7 +89,7 @@ export default function Home() {
    */
   const handleAirdrop = async () => {
     // connectionインスタンスを生成
-    const connection = new Connection(clusterApiUrl(NETWORK), "confirmed");
+    const connection = new Connection(clusterApiUrl(network), "confirmed");
     // エアドロップ(1 SOL)をリクエストするためのデジタル署名データを生成する。
     const signature = await connection.requestAirdrop(account.publicKey, LAMPORTS_PER_SOL);
     // エアドロップを実施するためのトランザクションを処理する。
@@ -114,7 +115,7 @@ export default function Home() {
       // トランザクション用の署名データを初期化する。
       setTransactionSig("");
       // connectionインスタンスを生成
-      const connection = new Connection(clusterApiUrl(NETWORK), "confirmed");
+      const connection = new Connection(clusterApiUrl(network), "confirmed");
 
       // 送金処理用のデータを作成する。
       const instructions = SystemProgram.transfer({
@@ -168,12 +169,35 @@ export default function Home() {
         <hr className="my-6" />
 
         <div>
+          <label class="block">
+            <span class="text-gray-700">接続先のネットワーク</span>
+            <select class="
+                block
+                w-full
+                mt-1
+                rounded-md
+                bg-gray-100
+                border-transparent
+                focus:border-gray-500 focus:bg-white focus:ring-0
+              "
+              onChange={(e) => setNetwork(e.target.value)} 
+            >
+              <option>mainnet</option>
+              <option>devnet</option>
+              <option>testnet</option>
+            </select>
+          </label>
+        </div>
+
+        <hr className="my-6" />
+
+        <div>
           <h3 className="p-2 border-dotted border-l-8 border-l-indigo-600">My Wallet</h3>
           {/* ウォレットアドレス表示 */}
           {account && (
             <>
               <div className="my-6 text-indigo-600 font-bold">アドレス: {account.publicKey.toString()}</div>
-              <div className="my-6 font-bold">ネットワーク: {NETWORK}</div>
+              <div className="my-6 font-bold">ネットワーク: {network}</div>
               {typeof balance === "number" && <div className="my-6 font-bold">💰 残高: {balance} SOL</div>}
             </>
           )}
@@ -311,7 +335,7 @@ export default function Home() {
                 <>
                   <span className="text-red-600">送金が完了しました!</span>
                   <a
-                    href={`https://explorer.solana.com/tx/${transactionSig}?cluster=${NETWORK}`}
+                    href={`https://explorer.solana.com/tx/${transactionSig}?cluster=${network}`}
                     className="border-double border-b-4 border-b-indigo-600"
                     target='_blank'
                   >
