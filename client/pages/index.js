@@ -26,7 +26,7 @@ export default function Home() {
   const [balance, setBalance] = useState(0);
   const [transactionSig, setTransactionSig] = useState("");
   const [initFlg, setInitFlg] = useState(true);
-  const [network, setNetwork] = useState(null);
+  const [network, setNetwork] = useState("mainnnet");
 
   /**
    * アカウントを生成するメソッド
@@ -169,9 +169,9 @@ export default function Home() {
         <hr className="my-6" />
 
         <div>
-          <label class="block">
-            <span class="text-gray-700">接続先のネットワーク</span>
-            <select class="
+          <label className="block">
+            <span className="text-gray-700">接続先のネットワーク</span>
+            <select className="
                 block
                 w-full
                 mt-1
@@ -225,11 +225,11 @@ export default function Home() {
           : 
             <button
               className="p-2 my-6 text-white bg-sky-500 focus:ring focus:ring-sky-300 rounded-lg cursor-pointer"
-              onClick={() => {
+              onClick={async () => {
                 // クリップボードにコピ-する。
-                navigator.clipboard.writeText(mnemonic);
-                alert("コピーしました！");
+                await window.navigator.clipboard.writeText(mnemonic);
                 setInitFlg(true);
+                alert("コピーしました！");
               }}
             >
               ニーモニックフレーズをコピーする
@@ -237,13 +237,23 @@ export default function Home() {
           }
           {mnemonic && (
             <>
-              <div className={initFlg ? 
-                "mt-1 p-4 border border-gray-300 bg-gray-200 blur-lg"
-              :  
-                "mt-1 p-4 border border-gray-300 bg-gray-200"
-              }>
-                {mnemonic}
-              </div>
+              <form 
+                onClick={async () => {
+                  // クリップボードにコピ-する。
+                  await window.navigator.clipboard.writeText(mnemonic);
+                  setInitFlg(true);
+                  alert("コピーしました！");
+                }} 
+                className="my-6"
+              >
+                <div className={initFlg ? 
+                  "mt-1 p-4 border border-gray-300 bg-gray-200 blur-lg"
+                :  
+                  "mt-1 p-4 border border-gray-300 bg-gray-200"
+                }>
+                  {mnemonic}
+                </div>
+              </form>
               <strong className="text-xs">
                 このフレーズは秘密にして、安全に保管してください。このフレーズが漏洩すると、誰でもあなたの資産にアクセスできてしまいます。<br />
                 オンライン銀行口座のパスワードのようなものだと考えてください。
